@@ -1,4 +1,4 @@
-package main
+  package main
 
 import (
     "fmt"
@@ -24,7 +24,7 @@ func GetWindowTextLength(hwnd HWND) int {
 	return int(ret)
 }
 
-  func GetWindowText(hwnd HWND) string {
+func GetWindowText(hwnd HWND) string {
 	textLen := GetWindowTextLength(hwnd) + 1
 
 	buf := make([]uint16, textLen)
@@ -43,21 +43,16 @@ func getWindow(funcName string) uintptr {
 }
 
 func main() {
-  var windowsTitles []string
+  var currentHwnd uintptr
 
-  for {
-		if hwnd := getWindow("GetForegroundWindow") ; hwnd != 0 {
+  for  {
+    if hwnd := getWindow("GetForegroundWindow"); hwnd != 0 {
+      if hwnd != currentHwnd {
+        currentHwnd = hwnd
 
-			text := GetWindowText(HWND(hwnd))
-      windowsTitles = append(windowsTitles, text)
-
-      for _, a := range windowsTitles {
-        if a != text {
-          windowsTitles = append(windowsTitles, text)
-          fmt.Println("window :", text, "# hwnd:", hwnd)
-        }
+        text := GetWindowText(HWND (hwnd))
+        fmt.Println("window :", text)
       }
-
-		}
-	}
+    }
+  }
 }
